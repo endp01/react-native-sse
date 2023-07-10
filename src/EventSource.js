@@ -117,7 +117,9 @@ class EventSource {
               );
             }
 
-            this._pollAgain(this.interval);
+            if (this.status !== this.CLOSED) {   // this line is new to double check for closed connection
+                this._pollAgain(this.interval);  // before update, this kept triggering on error even though status was CLOSED already
+            }          
           }
         }
       };
