@@ -129,8 +129,9 @@ class EventSource {
 
           if (xhr.readyState === XMLHttpRequest.DONE) {
             this._logDebug('[EventSource][onreadystatechange][ERROR] Response status error.');
-            this._pollAgain(this.interval, false);
-          }
+            if (this.status !== this.CLOSED) {   // this line is new to double check for closed connection
+                this._pollAgain(this.interval, false);  // before update, this kept triggering on error even though status was CLOSED already
+            }
         }
       };
 
